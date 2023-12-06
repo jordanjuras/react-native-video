@@ -36,7 +36,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     private var _controls:Bool = false
 
     /* Keep track of any modifiers, need to be applied after each play */
-    private var _audioOutput: String = "speaker"
+    // private var _audioOutput: String = "speaker"
     private var _volume:Float = 1.0
     private var _rate:Float = 1.0
     private var _maxBitRate:Float?
@@ -168,12 +168,12 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             object: nil
         )
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(audioRouteChanged(notification:)),
-            name: AVAudioSession.routeChangeNotification,
-            object: nil
-        )
+        // NotificationCenter.default.addObserver(
+        //     self,
+        //     selector: #selector(audioRouteChanged(notification:)),
+        //     name: AVAudioSession.routeChangeNotification,
+        //     object: nil
+        // )
         _playerObserver._handlers = self
 #if USE_VIDEO_CACHING
         _videoCache.playerItemPrepareText = playerItemPrepareText
@@ -229,13 +229,13 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     // MARK: - Audio events
 
     @objc func audioRouteChanged(notification:NSNotification!) {
-        if let userInfo = notification.userInfo {
-            let reason:AVAudioSession.RouteChangeReason! = userInfo[AVAudioSessionRouteChangeReasonKey] as? AVAudioSession.RouteChangeReason
-            //            let previousRoute:NSNumber! = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? NSNumber
-            if reason == .oldDeviceUnavailable, let onVideoAudioBecomingNoisy = onVideoAudioBecomingNoisy {
-                onVideoAudioBecomingNoisy(["target": reactTag as Any])
-            }
-        }
+        // if let userInfo = notification.userInfo {
+        //     let reason:AVAudioSession.RouteChangeReason! = userInfo[AVAudioSessionRouteChangeReasonKey] as? AVAudioSession.RouteChangeReason
+        //     //            let previousRoute:NSNumber! = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? NSNumber
+        //     if reason == .oldDeviceUnavailable, let onVideoAudioBecomingNoisy = onVideoAudioBecomingNoisy {
+        //         onVideoAudioBecomingNoisy(["target": reactTag as Any])
+        //     }
+        // }
     }
 
     // MARK: - Progress
@@ -531,7 +531,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
     @objc
     func setIgnoreSilentSwitch(_ ignoreSilentSwitch:String?) {
         _ignoreSilentSwitch = ignoreSilentSwitch
-        RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
+        // RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
         applyModifiers()
     }
 
@@ -553,7 +553,7 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
                 _player?.rate = 0.0
             }
         } else {
-            RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
+            // RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
 
             if _adPlaying {
 #if USE_GOOGLE_IMA
@@ -626,19 +626,19 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
 
     @objc
     func setAudioOutput(_ audioOutput:String) {
-        _audioOutput = audioOutput
-        RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
-        do {
-            if audioOutput == "speaker" {
-#if os(iOS)
-                try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-#endif
-            } else if audioOutput == "earpiece" {
-                try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
-            }
-        } catch {
-            print("Error occurred: \(error.localizedDescription)")
-        }
+//         _audioOutput = audioOutput
+//         RCTPlayerOperations.configureAudio(ignoreSilentSwitch:_ignoreSilentSwitch, mixWithOthers:_mixWithOthers, audioOutput:_audioOutput)
+//         do {
+//             if audioOutput == "speaker" {
+// #if os(iOS)
+//                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+// #endif
+//             } else if audioOutput == "earpiece" {
+//                 try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.none)
+//             }
+//         } catch {
+//             print("Error occurred: \(error.localizedDescription)")
+//         }
     }
 
     @objc
@@ -710,8 +710,8 @@ class RCTVideo: UIView, RCTVideoPlayerViewControllerDelegate, RCTPlayerObserverH
             setMaxBitRate(_maxBitRate)
         }
 
-        setAudioOutput(_audioOutput)
-        setSelectedAudioTrack(_selectedAudioTrackCriteria)
+        // setAudioOutput(_audioOutput)
+        // setSelectedAudioTrack(_selectedAudioTrackCriteria)
         setSelectedTextTrack(_selectedTextTrackCriteria)
         setResizeMode(_resizeMode)
         setRepeat(_repeat)
